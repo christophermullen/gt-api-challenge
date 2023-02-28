@@ -11,7 +11,7 @@ import (
 )
 
 /*
-Using Gorilla mux router: supports method-based routing
+Using Gorilla mux router: supports easy method-based routing
 */
 var router *mux.Router
 
@@ -21,8 +21,21 @@ Start listening on port
 func Start(port string) {
 	router = mux.NewRouter()
 	initHandlers()
+
+	srv := &http.Server{
+		Addr:    port,
+		Handler: router,
+	}
+
+	go func() {
+		err := srv.ListenAndServe()
+		if err != nil && err != http.ErrServerClosed {
+			log.Fatalf("Error with ListenAndServe(). Port already in use?: %v\n", err)
+		}
+	}()
+
 	fmt.Println("Router initialized and listening on " + port)
-	log.Fatal(http.ListenAndServe(":12345", router))
+
 }
 
 /*
@@ -42,7 +55,7 @@ func GetAllNotes(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	// Turn slice of posts into json
-	notes, err := model.GetAllNotes()
+	notes, err := model.GetAllNotes(r.Context())
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -79,7 +92,7 @@ func CreateNote(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Add note to database
-	err = model.CreateNote(newNote)
+	err = model.CreateNote(r.Context(), newNote)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write([]byte("A note with that title already exists"))

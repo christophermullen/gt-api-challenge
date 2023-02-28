@@ -12,12 +12,12 @@ import (
 Document struct for notes
 */
 type Note struct {
-	Title       string `bson:"title,omitempty"`
-	Description string `bson:"description,omitempty"`
+	Title       string `bson:"title" json:"title"`
+	Description string `bson:"description" json:"description"`
 }
 
 /*
-Save the note collection after InitNotes
+Notes collection
 */
 var notesCollection *mongo.Collection
 
@@ -31,21 +31,21 @@ func InitNotes(dbName string, collectionName string) {
 /*
 Returns all notes in the collection as a slice
 */
-func GetAllNotes() (notes []Note, err error) {
+func GetAllNotes(cxt context.Context) (notes []Note, err error) {
 
 	// Prepare find options
 	findOptions := options.Find()
 	findOptions.SetProjection(bson.M{"_id": 0}) //dont return _id field
 
 	// Passing bson.D{} (empty document) as the filter matches all documents in the collection
-	cur, err := notesCollection.Find(context.TODO(), bson.D{}, findOptions)
+	cur, err := notesCollection.Find(cxt, bson.D{}, findOptions)
 	if err != nil {
 		return notes, err
 	}
 
 	// Find() returns a cursor
 	// Iterating through the cursor decodes documents one at a time
-	for cur.Next(context.TODO()) {
+	for cur.Next(cxt) {
 		// create value onto which the single document can be decoded
 		var elem Note
 		err := cur.Decode(&elem)
@@ -60,7 +60,7 @@ func GetAllNotes() (notes []Note, err error) {
 	}
 
 	// Close the cursor once finished
-	cur.Close(context.TODO())
+	cur.Close(cxt)
 
 	return notes, nil
 }
@@ -69,10 +69,10 @@ func GetAllNotes() (notes []Note, err error) {
 Create note and add to collection
 Returns non-nil error if note of identital title is already in collection
 */
-func CreateNote(newNote Note) error {
+func CreateNote(cxt context.Context, newNote Note) error {
 
 	// Try to insert note
-	_, err := notesCollection.InsertOne(context.TODO(), newNote)
+	_, err := notesCollection.InsertOne(cxt, newNote)
 
 	// If schema prevents insertion, we have a duplicate, return error
 	if err != nil {
