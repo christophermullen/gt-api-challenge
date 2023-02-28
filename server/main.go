@@ -12,9 +12,7 @@ const collectionName = "notesCollection"
 
 func main() {
 	model.InitDB(mongoURI)
-	defer model.Close()
-
+	defer model.CloseDB()
 	model.InitNotes(dbName, collectionName)
-
 	controller.Start(port)
 }

@@ -11,9 +11,9 @@ import (
 )
 
 /*
-Conncection timeout length
+Connection timeout length
 */
-const timeoutSec = 3
+const timeoutSec = 5
 
 /*
 Save mongo client after InitDB
@@ -36,13 +36,13 @@ func InitDB(mongoURI string) {
 	var err error
 	client, err = mongo.Connect(cxt, clientOptions)
 	if err != nil {
-		log.Fatalf("Error connecting to MongoDB. Is database running with correct URI?\n %v\n", err)
+		log.Fatalf("Error connecting to MongoDB. Is database running with correct URI?: %v\n", err)
 	}
 
 	// Ensure connected
 	err = client.Ping(cxt, nil)
 	if err != nil {
-		log.Fatalf("Error connecting to MongoDB. Is database running with correct URI?\n %v\n", err)
+		log.Fatalf("Error connecting to MongoDB. Is database running with correct URI?: %v\n", err)
 	}
 	fmt.Println("Connected to MongoDB!")
 }
@@ -50,7 +50,7 @@ func InitDB(mongoURI string) {
 /*
 Disconnect from MongoDB
 */
-func Close() {
+func CloseDB() {
 
 	// Add timeout for graceful disconnect
 	cxt, cancel := context.WithTimeout(context.Background(), time.Duration(timeoutSec)*time.Second)
@@ -59,7 +59,7 @@ func Close() {
 	// Disconnect
 	err := client.Disconnect(cxt)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Failed to close connection with MongoDB gracefully: %v\n", err)
 	}
 	fmt.Println("Connection to MongoDB closed.")
 }
