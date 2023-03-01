@@ -20,14 +20,14 @@ You may use any tool of your choosing to call the API endpoints (eg cURL, Postma
 
 ### Create a note and add it to the database
 ```
-POST localhost:12345/notes
+POST http://localhost:12345/notes
 ```
 - Accepts a JSON object containing a nonempty 'title' and an optional 'description'
 - An existing note with the same 'title' cannot already exist in the database
 
 ### Read all notes in the database
 ```
-GET localhost:12345/notes
+GET http://localhost:12345/notes
 ```
 - Returns a JSON array of all notes in the database
 
