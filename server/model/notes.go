@@ -30,6 +30,7 @@ func InitNotes(dbName string, collectionName string) {
 
 /*
 Returns all notes in the collection as a slice
+If it fails to decode a note, it returns an empty slice and non-nil error
 */
 func GetAllNotes(cxt context.Context) (notes []Note, err error) {
 
@@ -50,6 +51,7 @@ func GetAllNotes(cxt context.Context) (notes []Note, err error) {
 		var elem Note
 		err := cur.Decode(&elem)
 		if err != nil {
+			notes = make([]Note, 0)
 			return notes, err
 		}
 		notes = append(notes, elem)
