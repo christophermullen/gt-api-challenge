@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+
+  mongo:
+    image: mongo
+    environment:
+      # Blank just for test purposes, otherwise add to mongodb URL
+      MONGO_INITDB_ROOT_USERNAME: ""
+      MONGO_INITDB_ROOT_PASSWORD: ""
+    ports:
+      - 27017:27017
+    volumes:
+      # For persistent database after starting/stopping container
+      - ./mongo_data_container:/data/db
+      # Upon database initialization, run JS file that prohibits duplicate "titles"
+      - ./server/config/notesDB-init.js:/docker-entrypoint-initdb.d/notesDB-init.js
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+    # Stop spam in console
+    command: mongod --quiet --logpath /dev/null 
+
+  app:
+    build: server
+    ports:
+      - 12345:12345
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+volumes:
+  mongo_data_container:

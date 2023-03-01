@@ -8,7 +8,7 @@ import (
 )
 
 const port = ":12345"
-const mongoURI = "mongodb://localhost:27017"
+const mongoURI = "mongodb://mongo:27017"
 const dbName = "api_challenge_db"
 const collectionName = "notesCollection"
 
