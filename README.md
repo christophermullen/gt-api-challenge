@@ -4,14 +4,15 @@
 ## Prerequisites
 
 Running this server requires Docker and Docker Compose be installed and available.
-
+<br></br>
 
 ## Starting the Server Using Docker Compose
 
-Run the following command in the top-level directory of this project
+Run the following command in the top-level directory of this project:
 ```shell
 $ docker-compose up
 ```
+<br></br>
 
 
 ## Calling the API Endpoints
@@ -30,6 +31,7 @@ POST localhost:12345/notes
 GET localhost:12345/notes
 ```
 - Returns a JSON array of all notes in the database
+<br></br>
 
 
 ## Using the Provided Scripts
