@@ -7,7 +7,7 @@ import (
 )
 
 /*
-GET: Serve all notes to client as JSON
+GET: Serve all notes to client as JSON.
 */
 func GetAllNotes(w http.ResponseWriter, r *http.Request) {
 
@@ -26,7 +26,7 @@ func GetAllNotes(w http.ResponseWriter, r *http.Request) {
 }
 
 /*
-POST: Add new note to collection. Prohibits duplicates
+POST: Add new note to collection. Prohibits duplicates.
 */
 func CreateNote(w http.ResponseWriter, r *http.Request) {
 
