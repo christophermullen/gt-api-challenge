@@ -2,7 +2,6 @@ package model
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"time"
 
@@ -44,7 +43,7 @@ func InitDB(mongoURI string) {
 	if err != nil {
 		log.Fatalf("Error connecting to MongoDB. Is database running with correct URI?: %v\n", err)
 	}
-	fmt.Println("Connected to MongoDB!")
+	log.Println("Connected to MongoDB!")
 }
 
 /*
@@ -61,5 +60,5 @@ func CloseDB() {
 	if err != nil {
 		log.Fatalf("Failed to close connection with MongoDB gracefully: %v\n", err)
 	}
-	fmt.Println("Connection to MongoDB closed.")
+	log.Println("Connection to MongoDB closed.")
 }

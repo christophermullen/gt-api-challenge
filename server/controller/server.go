@@ -2,7 +2,6 @@ package controller
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -35,16 +34,16 @@ func Start(port string) {
 		if err != nil && err != http.ErrServerClosed {
 			log.Fatalf("Error with ListenAndServe(). Port already in use?: %v\n", err)
 		}
-		fmt.Println("Shut down server successfully.")
+		log.Println("Shut down server successfully.")
 	}()
-	fmt.Println("Server initialized and listening on " + port)
+	log.Println("Server initialized and listening on " + port)
 
 	// Capture SIGINT from server console
-	sigint := make(chan os.Signal, 1)
-	signal.Notify(sigint, os.Interrupt)
+	sigChannel := make(chan os.Signal, 1)
+	signal.Notify(sigChannel, os.Interrupt)
 
-	// Waiting for SIGINT
-	<-sigint
+	// Wait for SIGINT
+	<-sigChannel
 
 	// Shut down server
 	err := server.Shutdown(context.Background())
