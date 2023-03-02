@@ -18,14 +18,14 @@ $ docker-compose up
 
 You may use any tool of your choosing to call the API endpoints (eg cURL, Postman, etc), or you may use the provided scripts. The endpoints are as follows:
 
-### Create a note and add it to the database
+### Create a note
 ```
 POST http://localhost:12345/notes
 ```
 - Accepts a JSON object containing a nonempty 'title' and an optional 'description'
 - An existing note with the same 'title' cannot already exist in the database
 
-### Read all notes in the database
+### Read all notes
 ```
 GET http://localhost:12345/notes
 ```
@@ -51,3 +51,13 @@ $ ./scripts/list_notes.sh
 Listing all notes:
 [{"title":"Cool Title","description":"Cool Description"},{"title":"Meh Title","description":"So-So Description"}]
 ```
+
+
+## Necessary Improvements for Production
+
+There are a number of necessary changes if something like this were to be used in production, namely:
+- Adding authentication to MongoDB
+- Main.go has hard-coded values that should use environment variables
+- Unit tests
+
+
