@@ -9,8 +9,9 @@ Running this server requires Docker and Docker Compose be installed and availabl
 ## Starting the Server Using Docker Compose
 
 Run the following command in the top-level directory of this project:
+
 ```shell
-$ docker-compose up
+$ docker-compose up --build
 ```
 
 
@@ -19,16 +20,20 @@ $ docker-compose up
 You may use any tool of your choosing to call the API endpoints (eg cURL, Postman, etc), or you may use the provided scripts. The endpoints are as follows:
 
 ### Create a note
+
 ```
 POST http://localhost:12345/notes
 ```
+
 - Accepts a JSON object containing a nonempty 'title' and an optional 'description'
 - An existing note with the same 'title' cannot already exist in the database
 
 ### Read all notes
+
 ```
 GET http://localhost:12345/notes
 ```
+
 - Returns a JSON array of all notes in the database
 
 
@@ -56,6 +61,7 @@ Listing all notes:
 ## Necessary Improvements for Production
 
 There are a number of necessary changes if something like this were to be used in production, namely:
+
 - Adding authentication to MongoDB
 - Main.go has hard-coded values that should use environment variables
 - Unit tests
