@@ -10,11 +10,6 @@ import (
 )
 
 /*
-Connection timeout length
-*/
-const timeoutSec = 5
-
-/*
 Save mongo client after InitDB
 */
 var client *mongo.Client
@@ -22,7 +17,7 @@ var client *mongo.Client
 /*
 Connect to MongoDB
 */
-func InitDB(mongoURI string) {
+func InitDB(mongoURI string, timeoutSec int) {
 
 	// Add timeout for connection
 	cxt, cancel := context.WithTimeout(context.Background(), time.Duration(timeoutSec)*time.Second)
@@ -49,7 +44,7 @@ func InitDB(mongoURI string) {
 /*
 Disconnect from MongoDB
 */
-func CloseDB() {
+func CloseDB(timeoutSec int) {
 
 	// Add timeout for graceful disconnect
 	cxt, cancel := context.WithTimeout(context.Background(), time.Duration(timeoutSec)*time.Second)
